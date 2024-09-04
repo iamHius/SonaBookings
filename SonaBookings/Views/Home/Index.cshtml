@@ -2,7 +2,15 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section Begin -->
+@await Component.InvokeAsync("HeroSection")
+<!-- Hero Section End -->
+<!-- About Us Section Begin -->
+@await Component.InvokeAsync("AboutUsSection")
+<!-- About Us Section End -->
+<!-- Services Section End -->
+@await Component.InvokeAsync("ServicesSection")
+<!-- Services Section End -->
+<!-- Home Room Section Begin -->
+@await Component.InvokeAsync("RoomTypeSection")
+<!-- Home Room Section End -->
