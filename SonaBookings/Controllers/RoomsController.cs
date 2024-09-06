@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SonaBookings.Areas.Identity.Data;
 using SonaBookings.Models;
+using SonaBookings.Models.ViewModels;
+
 
 namespace SonaBookings.Controllers
 {
     public class RoomsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public int PageSize = 6;
 
         public RoomsController(ApplicationDbContext context)
         {
@@ -20,11 +24,80 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Rooms
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int roompage = 1)
         {
-            var applicationDbContext = _context.Rooms.Include(r => r.Capacity).Include(r => r.RoomType).Include(r => r.Size);
-            return View(await applicationDbContext.ToListAsync());
+            /*var applicationDbContext = _context.Rooms.Include(r => r.Capacity).Include(r => r.RoomType).Include(r => r.Size);
+            return View(await applicationDbContext.ToListAsync());*/
+            return View(new RoomListViewModel
+            {
+                Rooms = _context.Rooms.Skip((roompage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = roompage,
+                    TotalItem = _context.Rooms.Count()
+                }
+            });
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> CheckAvailable(int roompage = 1)
+        {
+            
+            return View(new RoomListViewModel
+            {
+                Rooms = _context.Rooms.Where(r => r.IsAvailable == false)
+                .Include(r => r.IsAvailable)
+                .Skip((roompage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = roompage,
+                    TotalItem = _context.Rooms.Count()
+                }
+            });
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Search(string keywords, int roompage = 1)
+        {
+            return View(new RoomListViewModel
+            {
+                Rooms = _context.Rooms.Where(r => r.RoomNo.Contains(keywords))
+                .Skip((roompage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = roompage,
+                    TotalItem = _context.Rooms.Count()
+                }
+            });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> CheckRoomByType(int? roomTypeId, int roompage = 1)
+        {
+            if (roomTypeId == null)
+            {
+                return NotFound();
+            }    
+
+            return View("Index", new RoomListViewModel
+            {
+                Rooms = _context.Rooms
+                .Where(r => r.RoomTypeId == roomTypeId)
+                .Include(r => r.RoomType)
+                .Skip((roompage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = roompage,
+                    TotalItem = _context.Rooms.Count()
+                }
+            });
+        }
+
 
         // GET: Rooms/Details/5
         public async Task<IActionResult> Details(int? id)

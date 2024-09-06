@@ -4,23 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SonaBookings.Models
 {
-    public class Reservation
-    {
-        public List<Booking> Books { get; set; } = new List<Booking>();
-        public void AddBooking(Room room)
-        {
-            Booking? book = Books.Where(r => r.Room.RoomId == room.RoomId).FirstOrDefault();
-            if (book == null)
-            {
-                Books.Add(new Booking()
-                {
-                    Room = room,
-
-                });
-            }
-
-        }
-    }
     public class Booking
     {
         [Key]
@@ -34,11 +17,11 @@ namespace SonaBookings.Models
         [Required]
         public DateTime? CheckOutDate { get; set; }
         [Required]
-        public DateTime? BookingDate { get; set; }
+        public DateTime? BookingDate { get; set; } = DateTime.Now;
         [ForeignKey("BookingStatus")]
         public string? Status { get; set; }
 
         public ApplicationUser? User { get; set; }
-        public Room? Room { get; set; } = new Room();
+        public Room? Room { get; set; }
     }
 }
