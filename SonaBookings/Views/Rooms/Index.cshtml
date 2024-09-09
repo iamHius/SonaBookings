@@ -2,7 +2,7 @@
 @model RoomListViewModel;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Rooms";
 }
 
 <section class="rooms-section spad">
@@ -12,28 +12,39 @@
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="room-item">
-                        <img src="@item.RoomPhoto" alt="Room Photo">
+                        <img src="/template/@item.RoomPhoto" alt="Room Photo">
                         <div class="ri-text">
                             @* <h4>@item.RoomType.RoomTypeName</h4> *@
                             <h4>@item.RoomNo</h4>
                             <h3>@item.FeePerNight$<span>/Pernight</span></h3>
                             <table>
                                 <tbody>
-                                    <tr>
-                                        <td class="r-o">Size:</td>
-                                        @* <td>@item.Size.SizeName</td> *@
-                                    </tr>
-                                    <tr>
+                                    @* <tr>
+                                <td class="r-o">Size:</td>
+                                <td>@item.Capacity.CapacityName</td>
+                                </tr> *@
+                                    @* <tr>
                                         <td class="r-o">Capacity:</td>
-                                        @* <td>@item.Capacity.CapacityName</td> *@
-                                    </tr>
+                                        <td>@item.Capacity.CapacityName</td>
+                                    </tr> *@
                                     <tr>
                                         <td class="r-o">Services:</td>
                                         <td>Wifi, Television, Bathroom,...</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <a href="/Bookings/Create/?roomId=@item.RoomId" class="primary-btn">More Details</a>
+                            <div>
+                                @if (item.IsAvailable == true)
+                                {
+                                    <a href="/Bookings/Create/?roomId=@item.RoomId" class="primary-btn ms-3 me-xl-5">Book Now</a>
+                                    <a href="/Rooms/Details/?id=@item.RoomId" class="primary-btn ms-xl-5">Details</a>
+                                }
+                                else
+                                {
+                                    <span class="text-danger justify-content-center">Not Available</span>
+                                }
+                                
+                            </div>
                         </div>
                     </div>
                 </div>

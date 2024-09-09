@@ -1,9 +1,4 @@
 ﻿@model SonaBookings.Models.Room
-
-@{
-    ViewData["Title"] = "Room Details";
-}
-
 <section class="room-details-section spad">
     <div class="container">
         <div class="row justify-content-center">
@@ -27,7 +22,7 @@
                         <h2>@Model.FeePerNight$<span>/Pernight</span></h2>
                         <table>
                             <tbody>
-                                <tr>
+                                @* <tr>
                                     <td class="r-o">Size:</td>
                                     <td>@Model.Size.SizeName</td>
                                 </tr>
@@ -38,7 +33,7 @@
                                 <tr>
                                     <td class="r-o">Room Type:</td>
                                     <td>@Model.RoomType.RoomTypeName</td>
-                                </tr>
+                                </tr> *@
                                 <tr>
                                     <td class="r-o">Services:</td>
                                     <td>Wifi, Television, Bathroom,...</td>

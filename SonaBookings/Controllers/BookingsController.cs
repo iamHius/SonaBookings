@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SonaBookings.Areas.Identity.Data;
 using SonaBookings.Models;
+using SonaBookings.Models.ViewModels;
 
 namespace SonaBookings.Controllers
 {
@@ -30,6 +32,7 @@ namespace SonaBookings.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [ActionName("CheckOut")]
         public async Task<IActionResult> CheckOut(int? id)
         {
             if (id == null)
@@ -87,19 +90,39 @@ namespace SonaBookings.Controllers
         public IActionResult Create(int? roomId)
         {
             var user = _userManager.GetUserId(User);
-
+            
             if (roomId == null)
             {
                 return NotFound();
             }
-            var booking = new Booking()
-            {
+            
+            /*var booking = new Booking()
+            { 
                 RoomId = roomId.Value,
                 UserId = user,
                 BookingDate = DateTime.Now,
                 Status = "Confirmed"
             };
-            return View(booking);
+
+            return View(booking);*/
+            return View("Create", new RoomListViewModel
+            {
+                Rooms = _context.Rooms
+                .Include(r => r.Capacity)
+                .Include(r => r.RoomType)
+                .Include(r => r.Size)
+                .Where(b => b.RoomId == roomId),
+
+                Booking = new Booking
+                {
+                    
+                    RoomId = roomId.Value,
+                    UserId = user,
+                    BookingDate = DateTime.Now,
+                    Status = "Confirmed"
+                }
+
+            });
         }
 
         // POST: Bookings/Create
@@ -122,14 +145,9 @@ namespace SonaBookings.Controllers
                     _context.Update(room);
                     await _context.SaveChangesAsync();
                 }
-                if (room == null || !room.IsAvailable)
-                {
-                    ModelState.AddModelError("", "Phong nay da duoc dat");
-                    return View(booking);
-                }
+                
                 return RedirectToAction("Details", new {id = booking.BookingId});
             }
-            /*ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);*/
             return View(booking);
         }
 

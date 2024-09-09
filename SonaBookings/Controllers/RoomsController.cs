@@ -39,24 +39,7 @@ namespace SonaBookings.Controllers
                 }
             });
         }
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> CheckAvailable(int roompage = 1)
-        {
-            
-            return View(new RoomListViewModel
-            {
-                Rooms = _context.Rooms.Where(r => r.IsAvailable == false)
-                .Include(r => r.IsAvailable)
-                .Skip((roompage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo
-                {
-                    ItemsPerPage = PageSize,
-                    CurrentPage = roompage,
-                    TotalItem = _context.Rooms.Count()
-                }
-            });
-        }
+        
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Search(string keywords, int roompage = 1)

@@ -1,54 +1,115 @@
-﻿@model SonaBookings.Models.Booking
+﻿@* @model SonaBookings.Models.Booking; *@
+
+@using SonaBookings.Models.ViewModels
+@model RoomListViewModel
+
+
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add Booking";
 }
 
-<h1>Create</h1>
 
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input hidden asp-for="UserId" class="form-control" readonly />
+
+<section class="room-details-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                @foreach( var item in Model.Rooms)
+                {
+                    if(item.RoomId == Model.Booking.RoomId)
+                    {
+                        <div class="room-details-item">
+                            <img src="/template/img/room/room-details.jpg" alt="">
+                            <div class="rd-text">
+                                <div class="rd-title">
+                                    <h3>@item.RoomNo</h3>
+                                    <div class="rdt-right">
+                                        <div class="rating">
+                                            <i class="icon_star"></i>
+                                            <i class="icon_star"></i>
+                                            <i class="icon_star"></i>
+                                            <i class="icon_star"></i>
+                                            <i class="icon_star-half_alt"></i>
+                                        </div>
+                                        <a href="/Rooms/Index">Back To OurRooms</a>
+                                    </div>
+                                </div>
+                                <h2>@item.FeePerNight$<span>/Pernight</span></h2>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td class="r-o">Size:</td>
+                                            <td>@item.Size.SizeName</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="r-o">Capacity:</td>
+                                            <td>@item.Capacity.CapacityName</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="r-o">Room Type:</td>
+                                            <td>@item.RoomType.RoomTypeName</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="r-o">Services:</td>
+                                            <td>Wifi, Television, Bathroom,...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-            <div class="form-group">
-                <input hidden asp-for="RoomId" class="form-control" readonly />
+
+            <div class="col-lg-4">
+                <div class="room-booking">
+                    <h3>Your Reservation</h3>
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <input hidden asp-for="Booking.UserId" class="form-control" readonly />
+                        </div>
+                        <div class="form-group">
+                            <input hidden asp-for="Booking.RoomId" class="form-control" readonly />
+                        </div>
+                        <div class="check-date">
+                            <div class="form-group">
+                                <label asp-for="Booking.CheckInDate" class="control-label"></label>
+                                <input asp-for="Booking.CheckInDate" class="form-control" />
+                                <span asp-validation-for="Booking.CheckInDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="check-date">
+                            <div class="form-group">
+                                <label asp-for="Booking.CheckOutDate" class="control-label"></label>
+                                <input asp-for="Booking.CheckOutDate" class="form-control" />
+                                <span asp-validation-for="Booking.CheckOutDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                            <div class="form-group">
+                            <label asp-for="Booking.BookingDate" class="control-label"></label>
+                            <input asp-for="Booking.BookingDate" class="form-control" readonly />
+                            <span asp-validation-for="Booking.BookingDate" class="text-danger"></span>
+                            </div>
+                        <div class="form-group">
+                            <input hidden asp-for="Booking.Status" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">
+                                Book Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CheckInDate" class="control-label"></label> 
-                <input asp-for="CheckInDate" class="form-control" />
-                <span asp-validation-for="CheckInDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CheckOutDate" class="control-label"></label>
-                <input asp-for="CheckOutDate" class="form-control" />
-                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BookingDate" class="control-label"></label>
-                <input asp-for="BookingDate" class="form-control" readonly/>
-                <span asp-validation-for="BookingDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
