@@ -4,48 +4,57 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Danh sách đặt phòng</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CheckInDate)
+                Ngày đặt 
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CheckOutDate)
+                Ngày đến 
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookingDate)
+                Ngày đi 
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room)
+                Phòng 
             </th>
-            <th></th>
+            <th>
+                Trạng thái thanh toán 
+            </th>
+            <th>
+                Chi tiết 
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CheckInDate)
+                @item.BookingDate
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CheckOutDate)
+                @item.CheckInDate
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookingDate)
+                @item.CheckOutDate
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Room.RoomNo)
+                @item.Room.RoomNo
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.BookingId">Details</a> |
+                @(item.IsPayment ? "Đã thanh toán" : "Chưa thanh toán")
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-id="@item.BookingId" class="text-dark">Details</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+
+<partial name="_ViewDetailsStyle" />
+

@@ -1,0 +1,42 @@
+﻿@model SonaBookings.Models.RoomType
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>Create</h1>
+
+<h4>RoomType</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoomTypeName" class="control-label"></label>
+                <input asp-for="RoomTypeName" class="form-control" />
+                <span asp-validation-for="RoomTypeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomTypePhoto" class="control-label"></label>
+                <input asp-for="RoomTypePhoto" class="form-control" />
+                <span asp-validation-for="RoomTypePhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomTypeOrder" class="control-label"></label>
+                <input asp-for="RoomTypeOrder" class="form-control" />
+                <span asp-validation-for="RoomTypeOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

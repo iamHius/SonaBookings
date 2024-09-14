@@ -1,0 +1,42 @@
+﻿@using SonaBookings.Areas.Identity.Data;
+@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Account";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tài khoản 
+            </th>
+            <th>
+                Email 
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.UserName
+                </td>
+                <td>
+                    @item.Email
+                </td>
+            </tr>
+        }
+    <td>
+        <a asp-action="Edit" asp-route-id="BookingId">Edit</a> |
+        <a asp-action="Details" asp-route-id="BookingId">Details</a> |
+        <a asp-action="Delete" asp-route-id="BookingId">Delete</a>
+    </td>
+    </tbody>
+</table>
+
+
+<partial name="_ViewDetailsStyle"/>
+

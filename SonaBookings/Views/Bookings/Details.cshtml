@@ -5,7 +5,16 @@
 }
 
 <div class="container">
-    <h2>Chi tiết dat phong</h2>
+    @if (TempData["MessageCheckOut"] != null)
+    {
+        <div class="alert alert-success justify-content-center">
+            <h2>
+                @TempData["MessageCheckOut"]
+            </h2>
+        </div>
+
+    }
+    <h3>Chi tiết đặt phòng</h3>
     <table>
         <tr>
             <th>Phòng</th>
@@ -55,13 +64,13 @@
         else
         {
             <button type="submit" class="btn btn-primary">
-                <a href="/Bookings/CheckOut/@Model.BookingId">
+                <a href="/Bookings/CheckOut/@Model.BookingId" class="text-dark">
                     Trả phòng 
                 </a>
             </button>
             <button type="submit" class="btn btn-primary">
                 <a href="/Bookings/ViewAllInvoice" class="text-dark">
-                    Chi tiết hóa đơn 
+                    Danh sách hóa đơn 
                 </a>
             </button>
         }

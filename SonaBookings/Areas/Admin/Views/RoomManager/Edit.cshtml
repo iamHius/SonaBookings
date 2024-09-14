@@ -1,0 +1,67 @@
+﻿@model SonaBookings.Models.Room
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>Edit</h1>
+
+<h4>Room</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoomId" />
+            <div class="form-group">
+                <label asp-for="RoomNo" class="control-label"></label>
+                <input asp-for="RoomNo" class="form-control" />
+                <span asp-validation-for="RoomNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeePerNight" class="control-label"></label>
+                <input asp-for="FeePerNight" class="form-control" />
+                <span asp-validation-for="FeePerNight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomPhoto" class="control-label"></label>
+                <input asp-for="RoomPhoto" class="form-control" />
+                <span asp-validation-for="RoomPhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomDescription" class="control-label"></label>
+                <input asp-for="RoomDescription" class="form-control" />
+                <span asp-validation-for="RoomDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomTypeId" class="control-label"></label>
+                <select asp-for="RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypeId"></select>
+                <span asp-validation-for="RoomTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SizeId" class="control-label"></label>
+                <select asp-for="SizeId" class="form-control" asp-items="ViewBag.SizeId"></select>
+                <span asp-validation-for="SizeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CapacityId" class="control-label"></label>
+                <select asp-for="CapacityId" class="form-control" asp-items="ViewBag.CapacityId"></select>
+                <span asp-validation-for="CapacityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -84,7 +84,7 @@ namespace SonaBookings.Controllers
             };
             _context.Invoices.Add(invoice);
             await _context.SaveChangesAsync();
-
+            TempData["Message"] = "Thanh toan thanh cong";
             return RedirectToAction("InvoiceDetails", new { id = invoice.InvoiceId});
         }
 
@@ -128,7 +128,7 @@ namespace SonaBookings.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            TempData["Message"] = "Tra phong thanh cong";
+            TempData["MessageCheckOut"] = "Tra phong thanh cong";
             return RedirectToAction("Details", new { id = booking.BookingId});
         }
 

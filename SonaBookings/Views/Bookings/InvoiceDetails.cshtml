@@ -6,6 +6,15 @@
 }
 
 <div class="container">
+    @if (TempData["MessageCheckOut"] != null)
+    {
+        <div class="alert alert-success justify-content-center">
+            <h2>
+                @TempData["MessageCheckOut"]
+            </h2>
+        </div>
+
+    }
     <h2>Chi tiết hóa đơn</h2>
     <table>
         <tr>
