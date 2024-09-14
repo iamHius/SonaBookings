@@ -28,11 +28,13 @@
                                             <tr class="even">
                                                 <td class="sorting_1">@role.Id</td>
                                                 <td>@role.Name</td>
-                                                <td class="justify-content-center">
-                                                    <a class="btn btn-primary" href="/Admin/AccountManager/CreateRole">Create</a>
-                                                    <a class="btn btn-primary" href="/Admin/AccountManager/EditRole/@role.Id">Edit</a>
-                                                    <a class="btn btn-primary" href="/Admin/AccountManager/DeleteRole/@role.Id">Delete</a>
-                                                    <a class="btn btn-primary" href="/Admin/AccountManager/EditRole/@role.Id">Back</a>
+                                                <td>
+                                                    @* <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a>
+                                                    <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a>
+                                                    <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a>
+                                                    <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a> *@
+                                                    <a href="/Admin/AccountManager/EditRole/@role.Id">Edit</a>
+                                                </td>
                                             </tr>
 
 

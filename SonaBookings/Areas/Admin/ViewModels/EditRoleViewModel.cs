@@ -4,10 +4,14 @@ namespace SonaBookings.Areas.Admin.ViewModels
 {
     public class EditRoleViewModel
     {
+        public EditRoleViewModel()
+        {
+            Users = new List<string>();
+        }
         
-        public int Id {  get; set; }
+        public string? Id {  get; set; }
         [Required(ErrorMessage ="Role Name is required")]
-        public string RoleName { get; set; }
+        public string? Name { get; set; }
         public List<string> Users { get; set; }
     }
 }

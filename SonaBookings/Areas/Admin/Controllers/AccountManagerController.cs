@@ -9,9 +9,11 @@ namespace SonaBookings.Areas.Admin.Controllers
     public class AccountManagerController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AccountManagerController(RoleManager<IdentityRole> roleManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AccountManagerController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
         [HttpGet]
         public IActionResult CreateRole()
@@ -47,9 +49,40 @@ namespace SonaBookings.Areas.Admin.Controllers
             return View(roles);
         }
 
+        [HttpGet]
+        public IActionResult EditRole(string? id)
+        {
+            var role = _roleManager.FindByIdAsync(id);
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditRole(EditRoleViewModel model)
+        {
+            var role = await _roleManager.FindByIdAsync(model.Id);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {model.Id} canot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                role.Name = model.Name;
+                var result = await _roleManager.UpdateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRole", "AccountManager", new { area = "Admin" });
+                }
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+                return View(model);
+            }
+        }
         public IActionResult DeleteRole()
         {
-            return View("AccountManager","ListRole");
+            return RedirectToAction("AccountManager","ListRole", new {area = "Admin"});
         }
     }
 }
