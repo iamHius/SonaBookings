@@ -12,6 +12,7 @@ using SonaBookings.Areas.Identity.Data;
 using SonaBookings.Models;
 using SonaBookings.Models.ViewModels;
 
+
 namespace SonaBookings.Controllers
 {
     public class BookingsController : Controller
@@ -28,8 +29,76 @@ namespace SonaBookings.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Bookings.Include(b => b.Room).Include(b => b.User);
-            return View(await applicationDbContext.ToListAsync());
+            var currentUser = _userManager.GetUserId(User);
+            var booking = await _context.Bookings.Include(b => b.Room)
+                .Where(b => b.UserId == currentUser)
+                .ToListAsync();
+            return View(booking);
+        }
+
+        public async Task<IActionResult> ViewAllInvoice()
+        {
+            var currentUser = _userManager.GetUserId(User);
+            var invoice = await _context.Invoices
+                .Include(b => b.Booking)
+                .Where(b => b.Booking.UserId == currentUser)
+                .ToListAsync();
+            return View(invoice);
+        }
+
+        [ActionName("ProcessPayment")]
+        public async Task<IActionResult> ProcessPayment(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.Room)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(m => m.BookingId == id);
+            if(booking == null)
+            {
+                return NotFound();
+            }
+            int totalDays = (booking.CheckOutDate - booking.CheckInDate).Value.Days;
+            if (totalDays <= 0)
+            {
+                totalDays = 1;
+            }
+            decimal? totalPrice = booking.Room.FeePerNight * totalDays;
+
+            booking.Status = "Da thanh toan";
+            booking.IsPayment = true;
+            _context.Update(booking);
+
+            
+
+            var invoice = new Invoice
+            {
+                BookingId = booking.BookingId,
+                InvoiceDate = DateTime.Now,
+                InvoiceAmount = totalPrice,
+                IsPaid = true,
+            };
+            _context.Invoices.Add(invoice);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("InvoiceDetails", new { id = invoice.InvoiceId});
+        }
+
+        public async Task<IActionResult> InvoiceDetails(int id)
+        {
+            var invoice = await _context.Invoices
+                .Include(i => i.Booking)
+                .ThenInclude(b => b.Room)
+                .FirstOrDefaultAsync(i => i.InvoiceId == id);
+            if(invoice == null)
+            {
+                return NotFound();
+            }
+            return View(invoice);
         }
 
         [ActionName("CheckOut")]
@@ -95,16 +164,6 @@ namespace SonaBookings.Controllers
             {
                 return NotFound();
             }
-            
-            /*var booking = new Booking()
-            { 
-                RoomId = roomId.Value,
-                UserId = user,
-                BookingDate = DateTime.Now,
-                Status = "Confirmed"
-            };
-
-            return View(booking);*/
             return View("Create", new RoomListViewModel
             {
                 Rooms = _context.Rooms
@@ -115,11 +174,12 @@ namespace SonaBookings.Controllers
 
                 Booking = new Booking
                 {
-                    
+
                     RoomId = roomId.Value,
                     UserId = user,
                     BookingDate = DateTime.Now,
-                    Status = "Confirmed"
+                    Status = "Confirmed",
+                    IsPayment = false
                 }
 
             });

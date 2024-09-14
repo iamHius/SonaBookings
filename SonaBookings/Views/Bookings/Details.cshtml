@@ -4,58 +4,70 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="container">
+    <h2>Chi tiết dat phong</h2>
+    <table>
+        <tr>
+            <th>Phòng</th>
+            <td>@Model.Room.RoomNo</td>
+        </tr>
+        <tr>
+            <th>Gmail</th>
+            <td>@Model.User.UserName</td>
+        </tr>
+        <tr>
+            <th>Ngày đến</th>
+            <td>@Model.CheckInDate</td>
+        </tr>
+        <tr>
+            <th>Ngày đi</th>
+            <td>@Model.CheckOutDate</td>
+        </tr>
+        <tr>
+            <th>Ngày đặt phòng</th>
+            <td>@Model.BookingDate</td>
+        </tr>
+        <tr>
+            <th>Trạng thái thanh toán</th>
+            <td>@(Model.IsPayment ? "Đã thanh toán" : "Chưa thanh toán")</td>
+        </tr>
+        <tr>
+            <th>Giá</th>
+            <td>@Model.Room.FeePerNight VND / Mỗi đêm </td>
+        </tr>
 
-<div>
-    @if(TempData["Message"] != null)
-    {
-        <div class="alert alert-success justify-content-center">
-            @TempData["Message"]
-        </div>
+    </table>
+    <div class="col justify-content-center ms-xxl-10">
+        @if(Model.IsPayment == false)
+        {
+            <button type="submit" class="btn btn-primary">
+                <a href="/Bookings/ProcessPayment/@Model.BookingId" class="text-dark">
+                    Thanh toán ngay 
+                </a>
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <a href="/Bookings/Edit/@Model.BookingId" class="text-dark">
+                    Thay đổi phòng
+                </a>
+            </button>
 
-    }
-    <h4>Booking</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckInDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CheckInDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckOutDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CheckOutDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.UserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Room)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Room.RoomNo)
-        </dd>
-    </dl>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">
+                <a href="/Bookings/CheckOut/@Model.BookingId">
+                    Trả phòng 
+                </a>
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <a href="/Bookings/ViewAllInvoice" class="text-dark">
+                    Chi tiết hóa đơn 
+                </a>
+            </button>
+        }
+    </div>
 </div>
-<div>
-    <a href="/Bookings/CheckOut/?id=@Model.BookingId">CheckOut</a>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+<partial name="_ViewDetailsStyle" />
+           

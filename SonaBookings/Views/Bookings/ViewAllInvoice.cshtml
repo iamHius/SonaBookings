@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SonaBookings.Models.Invoice>
+
+@{
+    ViewData["Title"] = "ViewAllInvoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ViewAllInvoice</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPaid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPaid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking.BookingId)
+            </td>
+            <td>
+                <a asp-action="InvoiceDetails" asp-route-id="@item.InvoiceId">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

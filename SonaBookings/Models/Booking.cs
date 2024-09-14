@@ -12,7 +12,9 @@ namespace SonaBookings.Models
         public string? UserId { get; set; }
         [ForeignKey("Room")]
         public int RoomId { get; set; }
+        public bool IsPayment { get; set; } = false;
         [Required]
+        
         public DateTime? CheckInDate { get; set; }
         [Required]
         public DateTime? CheckOutDate { get; set; }
@@ -23,5 +25,6 @@ namespace SonaBookings.Models
 
         public ApplicationUser? User { get; set; }
         public Room? Room { get; set; }
+
     }
 }

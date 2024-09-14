@@ -1,0 +1,48 @@
+﻿@model SonaBookings.Models.Invoice
+
+@{
+    ViewData["Title"] = "InvoiceDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Chi tiết hóa đơn</h2>
+    <table>
+        <tr>
+            <th>Ngày thanh toán</th>
+            <td>@Model.InvoiceDate</td>
+        </tr>
+        <tr>
+            <th>Ngày đến</th>
+            <td>@Model.Booking.CheckInDate</td>
+        </tr>
+        <tr>
+            <th>Ngày đi</th>
+            <td>@Model.Booking.CheckOutDate</td>
+        </tr>
+        <tr>
+            <th>Mã khách hàng</th>
+            <td>@Model.Booking.UserId</td>
+        </tr>
+        <tr>
+            <th>Giá</th>
+            <td>@Model.InvoiceAmount VND</td>
+        </tr>
+       
+        <tr>
+            <th>Trạng thái thanh toán</th>
+            <td class="status confirmed">@(Model.IsPaid ? "Đã thanh toán" : "Chưa thanh toán")</td> 
+        </tr>
+    </table>
+    <div class="row justify-content-center">
+        <button type="submit" class="btn btn-primary">
+            <a href="/Bookings/Index" class="text-dark">
+                Back to Booking List
+            </a>
+        </button>
+
+    </div>
+</div>
+
+
+<partial name="_ViewDetailsStyle" />

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SonaBookings.Areas.Identity.Data;
 
@@ -11,9 +12,11 @@ using SonaBookings.Areas.Identity.Data;
 namespace SonaBookings.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240914003806_addInvoice")]
+    partial class addInvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,9 +247,6 @@ namespace SonaBookings.Migrations
                         .IsRequired()
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPayment")
-                        .HasColumnType("bit");
-
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
@@ -294,7 +294,7 @@ namespace SonaBookings.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("InvoiceAmount")
+                    b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(8,0)");
 
                     b.Property<DateTime>("InvoiceDate")

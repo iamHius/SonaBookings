@@ -6,5 +6,6 @@
         public PagingInfo PagingInfo { get; set; } = new PagingInfo();
 
         public Booking Booking { get; set; } = new Booking();
+
     }
 }
