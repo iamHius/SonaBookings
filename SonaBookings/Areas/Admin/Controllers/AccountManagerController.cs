@@ -50,10 +50,20 @@ namespace SonaBookings.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditRole(string? id)
+        public async Task<IActionResult> EditRole(string? id)
         {
-            var role = _roleManager.FindByIdAsync(id);
-            return View();
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(new EditRoleViewModel
+            {
+
+                Name = await _roleManager.GetRoleNameAsync(role)
+            });
         }
         [HttpPost]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
