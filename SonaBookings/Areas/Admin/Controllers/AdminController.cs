@@ -14,7 +14,6 @@ namespace SonaBookings.Areas.Admin.Controllers
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        
 
         public AdminController(ApplicationDbContext context,UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
@@ -30,23 +29,7 @@ namespace SonaBookings.Areas.Admin.Controllers
         {
             return View();
         }
-        /*[Route("Rooms")]
-        public async Task<IActionResult> Rooms()
-        {
-            var room = _context.Rooms
-                .Include(r => r.Capacity)
-                .Include(r => r.RoomType)
-                .Include(r => r.Size);
-            return View(await room.ToListAsync());
-        }*/
-        [Route("Bookings")]
-        public async Task<IActionResult> Bookings()
-        {
-            var booking = _context.Bookings
-                .Include(r => r.Room)
-                .Include(r => r.User);
-            return View(await booking.ToListAsync());
-        }
+
         [Route("Invoice")]
         public async Task<IActionResult> Invoice()
         {
@@ -60,7 +43,6 @@ namespace SonaBookings.Areas.Admin.Controllers
         {
             var user = _userManager.GetUserAsync(User);
             return View(await _userManager.Users.ToListAsync());
-
         }
 
     }
