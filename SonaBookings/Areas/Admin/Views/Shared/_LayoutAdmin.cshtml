@@ -1,6 +1,7 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <head>
 
     <meta charset="utf-8">
@@ -45,7 +46,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="/Admin/Rooms">
+                <a class="nav-link" href="/Admin/Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -69,9 +70,11 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Manager:</h6>
-                        <a class="collapse-item" href="cards.html">Account</a>
-                        <a class="collapse-item" href="/Admin/Rooms">Rooms</a>
-                        <a class="collapse-item" href="cards.html">Bookings</a>
+                        <a class="collapse-item" asp-action="ListUser" asp-controller="AccountManager" asp-area="Admin">Accounts</a>
+                        <a class="collapse-item" asp-action="ListRole" asp-controller="AccountManager" asp-area="Admin">Roles</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="RoomManager" asp-area="Admin">Rooms</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="BookingManager" asp-area="Admin">Bookings</a>
+                        <a class="collapse-item" asp-action="Invoice" asp-controller="Admin" asp-area="Admin">Invoice</a>
                     </div>
                 </div>
             </li>
@@ -87,10 +90,11 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Create New For:</h6>
-                        <a class="collapse-item" href="/Admin/Rooms/Create">Rooms</a>
-                        <a class="collapse-item" href="utilities-border.html">Bookings</a>
-                        <a class="collapse-item" href="utilities-animation.html">Account</a>
-                        <a class="collapse-item" href="utilities-other.html">Role Manager</a>
+                        <a class="collapse-item" asp-action="CreateRole" asp-controller="AccountManager" asp-area="Admin">Roles</a>
+                        <a class="collapse-item" asp-action="Create" asp-controller="RoomManager" asp-area="Admin">Rooms</a>
+                        <a class="collapse-item" asp-action="Create" asp-controller="BookingManager" asp-area="Admin">Bookings</a>
+                        <a class="collapse-item" asp-action="Create" asp-controller="RoomTypeManager" asp-area="Admin">RoomType</a>
+                        
                     </div>
                 </div>
             </li>
@@ -333,7 +337,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                     src="img/undraw_profile.svg">
+                                     src="/admin/img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -365,13 +369,6 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Welcome Admin!</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-                        </a>
-                    </div>      
                     <div class="row">
                         @RenderBody()
                     </div>
