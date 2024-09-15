@@ -29,15 +29,14 @@
                                                 <td class="sorting_1">@role.Id</td>
                                                 <td>@role.Name</td>
                                                 <td>
-                                                    @* <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a>
-                                                    <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a>
-                                                    <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a>
-                                                    <a asp-action="EditRole" asp-controller="AccountManager" asp-route-id="@role.Id">Edit</a> *@
-                                                    <a href="/Admin/AccountManager/EditRole/@role.Id">Edit</a>
+                                                    <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
+                                                        <a class="btn btn-primary" asp-action="EditRole" asp-controller="AccountManager" asp-area="Admin" asp-route-id="@role.Id">Edit</a>
+                                                        <button class="btn btn-primary" type="submit" onclick="return confirm('@role.Name se bi xoa')">
+                                                            Delete
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
-
-
                                         }
                                     </tbody>
                                 </table>

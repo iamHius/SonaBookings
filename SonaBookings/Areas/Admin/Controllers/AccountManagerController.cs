@@ -18,6 +18,65 @@ namespace SonaBookings.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(user);
+                
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUser");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return View("ListUser");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var result = await _roleManager.DeleteAsync(role);
+
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRole");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return View("ListRole");
+        }
+
+
+
+
+
+
+
         [HttpGet]
         public IActionResult ListUser()
         {
@@ -50,30 +109,7 @@ namespace SonaBookings.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserViewModel model, string id)
         {
-            /*var user = await _userManager.FindByNameAsync(model.Id);
-            if(user == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id {model.Id} can not be found";
-                return View("Index");
-            }
-            else
-            {
-                user.Id = model.Id;
-                user.Email = model.UserName;
-                user.UserName = model.UserName;
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if(result.Succeeded)
-                {
-                    return RedirectToAction("ListUser");
-                }
-                foreach(var error in result.Errors)
-                {
-                    ModelState.AddModelError("",error.Description);
-                }
-                return View(model);
-            }*/
+            
             var user = await _userManager.FindByIdAsync(id);
             if (id != model.Id)
             {
