@@ -61,7 +61,7 @@ namespace SonaBookings.Areas.Admin.Controllers
 
             return View(new EditRoleViewModel
             {
-
+                Id = id,
                 Name = await _roleManager.GetRoleNameAsync(role)
             });
         }
@@ -76,6 +76,7 @@ namespace SonaBookings.Areas.Admin.Controllers
             }
             else
             {
+                /*role.Id = model.Id;*/
                 role.Name = model.Name;
                 var result = await _roleManager.UpdateAsync(role);
 
@@ -89,6 +90,37 @@ namespace SonaBookings.Areas.Admin.Controllers
                 }
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUsersInRole(string roleId)
+        {
+            ViewBag.roleId = roleId;
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                ViewBag.ErroMessage = $"Role with Id = {roleId} cannot be found";
+                return View("NotFound");
+            }
+            var model = new List<UserRoleViewModel>();
+            foreach(var user in _userManager.Users)
+            {
+                var userRoleViewModel = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName
+                };
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRoleViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRoleViewModel.IsSelected = false;
+                }
+                model.Add(userRoleViewModel);
+            }
+            return View(model);
         }
         public IActionResult DeleteRole()
         {
