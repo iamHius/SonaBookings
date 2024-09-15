@@ -38,12 +38,6 @@ namespace SonaBookings.Areas.Admin.Controllers
             return View(await invoice.ToListAsync());
         }
 
-        [Route("Account")]
-        public async Task<IActionResult> Account()
-        {
-            var user = _userManager.GetUserAsync(User);
-            return View(await _userManager.Users.ToListAsync());
-        }
 
     }
 }

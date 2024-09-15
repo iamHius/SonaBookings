@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.Password.RequiredLength = 10;
+    options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 3;
     options.User.RequireUniqueEmail = true;
     options.Password.RequireDigit = true;

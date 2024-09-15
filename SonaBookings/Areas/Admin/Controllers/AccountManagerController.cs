@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SonaBookings.Areas.Admin.ViewModels;
 using SonaBookings.Areas.Identity.Data;
+using SonaBookings.Models;
 
 namespace SonaBookings.Areas.Admin.Controllers
 {
@@ -21,6 +23,85 @@ namespace SonaBookings.Areas.Admin.Controllers
         {
             var user = _userManager.Users;
             return View(user);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string? id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(new EditUserViewModel
+            {
+                Id = id,
+                UserName = await _userManager.GetUserNameAsync(user),
+                Email = await _userManager.GetEmailAsync(user)
+            });
+
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model, string id)
+        {
+            /*var user = await _userManager.FindByNameAsync(model.Id);
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id {model.Id} can not be found";
+                return View("Index");
+            }
+            else
+            {
+                user.Id = model.Id;
+                user.Email = model.UserName;
+                user.UserName = model.UserName;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("ListUser");
+                }
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+                return View(model);
+            }*/
+            var user = await _userManager.FindByIdAsync(id);
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+            if(user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                user.Id = model.Id;
+                user.Email = model.UserName;
+                user.UserName = model.UserName;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUser");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            
+            return View(model);
         }
 
 
