@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SonaBookings.Areas.Identity.Data;
+using SonaBookings.Models;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
@@ -31,6 +32,7 @@ builder.Services.AddDataProtection()
                 options.AutoGenerateKeys = true;
             });
 
+builder.Services.AddScoped<EmailSender>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);

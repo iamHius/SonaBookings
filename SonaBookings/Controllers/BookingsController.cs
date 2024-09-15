@@ -19,11 +19,13 @@ namespace SonaBookings.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly EmailSender _emailSender;
 
-        public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, EmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         // GET: Bookings
@@ -205,6 +207,17 @@ namespace SonaBookings.Controllers
                     _context.Update(room);
                     await _context.SaveChangesAsync();
                 }
+                var user = await _context.Users.FindAsync(booking.UserId);
+
+                var emailSubject = "Dat phong thanh cong";
+                var emailBody = 
+                    $@"  
+                        <h3>Xin chao {user.Email},</h3>
+                        <p>Ban da dat thanh cong phong {room.RoomNo} tu {booking.CheckInDate} den {booking.CheckOutDate}</p>
+                        <p>Gia phong: {room.FeePerNight} / 1 dem</p>
+                        <p>Cam on ban da dat phong cua chung toi</p>
+                    ";
+                await _emailSender.SendEmailAsync(user.Email,emailSubject, emailBody);
                 
                 return RedirectToAction("Details", new {id = booking.BookingId});
             }
