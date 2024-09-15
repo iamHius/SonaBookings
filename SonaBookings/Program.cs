@@ -13,7 +13,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 10;
     options.Password.RequiredUniqueChars = 3;
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.SignIn.RequireConfirmedEmail = false;
+})
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI();
 
 builder.Services.AddDataProtection()
             .SetApplicationName("SonaBookings")

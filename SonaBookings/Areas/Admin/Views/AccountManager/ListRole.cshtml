@@ -43,25 +43,10 @@
                                 </table>
                             </div>
                         </div>
-                        @* <div class="row">
-                            <div class="col-sm-12 col-md-5">
-                                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 9 entries</div>
-                            </div>
-                            <div class="col-sm-12 col-md-7">
-                                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-                                    <ul class="pagination">
-
-                                        <li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> *@
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 }
 else
@@ -74,7 +59,7 @@ else
             <h5 class="card-title">
                 Use the button below to create a role
             </h5>
-            <a class="btn btn-primary" style="width:auto" asp-controller="AccountManager" asp-action="CreateRole">
+            <a class="btn btn-primary" style="width:auto" asp-area="Identity" asp-page="/Account/Register">
                 Create Role
             </a>
         </div>

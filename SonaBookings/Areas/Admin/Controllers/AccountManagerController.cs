@@ -15,6 +15,15 @@ namespace SonaBookings.Areas.Admin.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
+        [HttpGet]
+        public IActionResult ListUser()
+        {
+            var user = _userManager.Users;
+            return View(user);
+        }
+
+
         [HttpGet]
         public IActionResult CreateRole()
         {
@@ -121,6 +130,47 @@ namespace SonaBookings.Areas.Admin.Controllers
                 model.Add(userRoleViewModel);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if(role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id {roleId} cannot be found";
+                return View("NotFound");
+            }
+            for (int i = 0; i < model.Count; i++)
+            {
+                var user = await _userManager.FindByIdAsync(model[i].UserId);
+                IdentityResult result = null;
+
+                if (model[i].IsSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
+                {
+                   result= await _userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if (model[i].IsSelected && (await _userManager.IsInRoleAsync(user, role.Name)))
+                {
+                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+                if (result.Succeeded)
+                {
+                    if(i < (model.Count -1))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return RedirectToAction("EditRole", new { id = roleId });
+                    }
+                }
+            }
+            return RedirectToAction("EditRole", new {id = roleId});
         }
         public IActionResult DeleteRole()
         {
