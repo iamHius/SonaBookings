@@ -51,7 +51,7 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var booking = await _context.Bookings
@@ -60,7 +60,7 @@ namespace SonaBookings.Controllers
                 .FirstOrDefaultAsync(m => m.BookingId == id);
             if(booking == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             int totalDays = (booking.CheckOutDate - booking.CheckInDate).Value.Days;
             if (totalDays <= 0)
@@ -96,7 +96,7 @@ namespace SonaBookings.Controllers
                 .FirstOrDefaultAsync(i => i.InvoiceId == id);
             if(invoice == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(invoice);
         }
@@ -106,7 +106,7 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             var booking = await _context.Bookings
                 .Include(b => b.Room)
@@ -115,7 +115,7 @@ namespace SonaBookings.Controllers
 
             if (booking == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             booking.Status = "CheckOut";
             _context.Update(booking);
@@ -139,7 +139,7 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var booking = await _context.Bookings
@@ -162,7 +162,7 @@ namespace SonaBookings.Controllers
             
             if (roomId == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View("Create", new RoomListViewModel
             {
@@ -216,13 +216,13 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var booking = await _context.Bookings.FindAsync(id);
             if (booking == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
@@ -238,7 +238,7 @@ namespace SonaBookings.Controllers
         {
             if (id != booking.BookingId)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -252,7 +252,7 @@ namespace SonaBookings.Controllers
                 {
                     if (!BookingExists(booking.BookingId))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -271,7 +271,7 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var booking = await _context.Bookings
@@ -280,7 +280,7 @@ namespace SonaBookings.Controllers
                 .FirstOrDefaultAsync(m => m.BookingId == id);
             if (booking == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(booking);

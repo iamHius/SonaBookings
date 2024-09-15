@@ -63,7 +63,7 @@ namespace SonaBookings.Controllers
         {
             if (roomTypeId == null)
             {
-                return NotFound();
+                return View("NotFound");
             }    
 
             return View("Index", new RoomListViewModel
@@ -87,7 +87,7 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var room = await _context.Rooms
@@ -97,7 +97,7 @@ namespace SonaBookings.Controllers
                 .FirstOrDefaultAsync(m => m.RoomId == id);
             if (room == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(room);
@@ -136,13 +136,13 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var room = await _context.Rooms.FindAsync(id);
             if (room == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             ViewData["CapacityId"] = new SelectList(_context.Capacitys, "CapacityId", "CapacityName", room.CapacityId);
             ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeName", room.RoomTypeId);
@@ -159,7 +159,7 @@ namespace SonaBookings.Controllers
         {
             if (id != room.RoomId)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -173,7 +173,7 @@ namespace SonaBookings.Controllers
                 {
                     if (!RoomExists(room.RoomId))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -193,7 +193,7 @@ namespace SonaBookings.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var room = await _context.Rooms
@@ -203,7 +203,7 @@ namespace SonaBookings.Controllers
                 .FirstOrDefaultAsync(m => m.RoomId == id);
             if (room == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(room);
