@@ -71,7 +71,7 @@ namespace SonaBookings.Controllers
             }
             decimal? totalPrice = booking.Room.FeePerNight * totalDays;
 
-            booking.Status = "Da thanh toan";
+            booking.Status = "Đã thanh toán";
             booking.IsPayment = true;
             _context.Update(booking);
 
@@ -86,7 +86,23 @@ namespace SonaBookings.Controllers
             };
             _context.Invoices.Add(invoice);
             await _context.SaveChangesAsync();
-            TempData["Message"] = "Thanh toan thanh cong";
+            TempData["Message"] = "Thanh toán thành công";
+            var user = await _userManager.FindByIdAsync(booking.UserId);
+            var emailSubject = "Thanh toán thành công";
+            var emailBody =
+                $@"  
+                        <h3>Xin chào {user.Email},</h3>
+                        <p>Đây là chi tiết hóa đơn thanh toán của bạn</p>
+                        <p>Ngày thanh toán: {invoice.InvoiceDate}</p>
+                        <p>Mã đặt phòng: {invoice.BookingId}</p>
+                        <p>Tổng tiền: {invoice.InvoiceAmount} VND</p>
+                        <p>Trạng thái thanh toán: ({(invoice.IsPaid ? "Đã thanh toán" : "Chưa thanh toán")})</p>
+                        <p>Mọi thắc mắc xin vui lòng liên hệ Zalo: 0798324679 </p>
+                        <p>Email: tt07h02@gmail.com </p>
+                        <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi</p>
+                        
+                    ";
+            await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
             return RedirectToAction("InvoiceDetails", new { id = invoice.InvoiceId});
         }
 
@@ -130,7 +146,7 @@ namespace SonaBookings.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            TempData["MessageCheckOut"] = "Tra phong thanh cong";
+            TempData["MessageCheckOut"] = "Trả phòng thành công";
             return RedirectToAction("Details", new { id = booking.BookingId});
         }
 
@@ -209,13 +225,18 @@ namespace SonaBookings.Controllers
                 }
                 var user = await _context.Users.FindAsync(booking.UserId);
 
-                var emailSubject = "Dat phong thanh cong";
+                var emailSubject = "Đặt phòng thành công";
                 var emailBody = 
                     $@"  
-                        <h3>Xin chao {user.Email},</h3>
-                        <p>Ban da dat thanh cong phong {room.RoomNo} tu {booking.CheckInDate} den {booking.CheckOutDate}</p>
-                        <p>Gia phong: {room.FeePerNight} / 1 dem</p>
-                        <p>Cam on ban da dat phong cua chung toi</p>
+                        <h3>Xin chào {user.Email},</h3>
+                        <p>Bạn đã đặt thành công phòng {room.RoomNo} từ ngày {booking.CheckInDate} đến ngày {booking.CheckOutDate}</p>
+                        <p>Giá phòng: {room.FeePerNight} VND/ 1 Đêm</p>
+                        <p>Ngày đặt phòng: {booking.BookingDate}</p>
+                        <p>Trạng thái thanh toán: ({(booking.IsPayment ? "Đã thanh toán" : "Chưa thanh toán")})</p>
+                        <p>Mọi thắc mắc xin vui lòng liên hệ Zalo: 0798324679 </p>
+                        <p>Email: tt07h02@gmail.com </p>
+                        <p>Cảm ơn bạn đã đặt phòng của chúng tôi</p>
+                        
                     ";
                 await _emailSender.SendEmailAsync(user.Email,emailSubject, emailBody);
                 
