@@ -1,4 +1,5 @@
 ﻿
+
 <section class="hero-section">
     <div class="container">
         <div class="row">
@@ -38,12 +39,11 @@
                         <div class="select-option">
                             <label for="room">Room Type</label>
                             <select id="room">
-                                <option value="">1 Room</option>
-                                <option value="">2 Room</option>
+                                <option value="">@Model.RoomTypeName</option>
                             </select>
                         </div>
                         <button>
-                            <a class="text-dark" href="/Rooms/CheckAvailable">Check Availability</a>
+                            <a class="text-dark" href="/Rooms/CheckRoomByType/?roomTypeId=@Model.RoomTypeOrder">Check Room Availability</a>
                         </button>
                     </form>
                 </div>

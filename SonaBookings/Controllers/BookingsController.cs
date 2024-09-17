@@ -259,8 +259,10 @@ namespace SonaBookings.Controllers
                 return View("NotFound");
             }
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", booking.UserId);
+
             return View(booking);
+
         }
 
         // POST: Bookings/Edit/5
@@ -296,7 +298,7 @@ namespace SonaBookings.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", booking.UserId);
             return View(booking);
         }
 
