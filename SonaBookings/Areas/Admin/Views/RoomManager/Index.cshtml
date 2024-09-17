@@ -10,6 +10,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Room Management</h6>
+            <a class="btn btn-primary" asp-action="Create" asp-controller="RoomManager" asp-area="Admin">Thêm phòng mới</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -18,7 +19,7 @@
                         <div class="col-sm-12">
                             <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <thead>
-                                    <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Room Number: activate to sort column descending" style="width: 74.2px;">Room Number</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 97.2px;">Type</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 58.2px;">Price</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 30.2px;">Status</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Capacity For: activate to sort column ascending" style="width: 70.2px;">Capacity For</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 66.2px;">Size</th></tr>
+                                    <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Room Number: activate to sort column descending" style="width: 68.2px;">Room Number</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Type: activate to sort column ascending" style="width: 97.2px;">Type</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 58.2px;">Price</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 30.2px;">Status</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Capacity For: activate to sort column ascending" style="width: 70.2px;">Capacity For</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Size: activate to sort column ascending" style="width: 50px;">Size</th> <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending" style="width: 90px;">Action</th> </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
@@ -41,6 +42,11 @@
                                             }
                                             <td>@item.Capacity.CapacityName</td>
                                             <td>@item.Size.SizeName</td>
+                                            <td>
+                            
+                                                <a class="btn btn-primary" asp-action="Delete" asp-controller="RoomManager" asp-area="Admin" asp-route-id="@item.RoomId">Xoá</a>
+                                                <a class="btn btn-primary" asp-action="Edit" asp-controller="RoomManager" asp-area="Admin" asp-route-id="@item.RoomId">Sửa</a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

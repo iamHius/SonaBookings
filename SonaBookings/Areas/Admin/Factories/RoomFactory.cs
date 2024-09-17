@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SonaBookings.Areas.Admin.Interfaces;
 using SonaBookings.Areas.Identity.Data;
 using SonaBookings.Models;
 
 namespace SonaBookings.Areas.Admin.Factories
 {
+    [Area("Admin")]
     public class RoomFactory : IRoomFactory
     {
         private readonly ApplicationDbContext _context;
