@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SonaBookings.Areas.Admin.Interfaces;
 using SonaBookings.Areas.Identity.Data;
 using SonaBookings.Models;
 
@@ -13,18 +14,18 @@ namespace SonaBookings.Areas.Admin.Controllers
     [Area("Admin")]
     public class RoomManagerController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRoomFactory _roomFactory;
 
-        public RoomManagerController(ApplicationDbContext context)
+        public RoomManagerController(IRoomFactory roomFactory)
         {
-            _context = context;
+            _roomFactory = roomFactory;
         }
 
         // GET: Admin/RoomManager
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Rooms.Include(r => r.Capacity).Include(r => r.RoomType).Include(r => r.Size);
-            return View(await applicationDbContext.ToListAsync());
+            var rooms = await _roomFactory.GetAllRoomsAsync();
+            return View(rooms);
         }
 
         // GET: Admin/RoomManager/Details/5
@@ -35,11 +36,7 @@ namespace SonaBookings.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
-                .Include(r => r.Capacity)
-                .Include(r => r.RoomType)
-                .Include(r => r.Size)
-                .FirstOrDefaultAsync(m => m.RoomId == id);
+            var room = await _roomFactory.GetRoomByIdAsync(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -49,11 +46,11 @@ namespace SonaBookings.Areas.Admin.Controllers
         }
 
         // GET: Admin/RoomManager/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CapacityId"] = new SelectList(_context.Capacitys, "CapacityId", "CapacityName");
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeName");
-            ViewData["SizeId"] = new SelectList(_context.Sizes, "SizeId", "SizeName");
+            ViewData["CapacityId"] = new SelectList(await _roomFactory.GetAllCapacitiesAsync(), "CapacityId", "CapacityName");
+            ViewData["RoomTypeId"] = new SelectList(await _roomFactory.GetAllRoomTypesAsync(), "RoomTypeId", "RoomTypeName");
+            ViewData["SizeId"] = new SelectList(await _roomFactory.GetAllSizesAsync(), "SizeId", "SizeName");
             return View();
         }
 
@@ -66,13 +63,13 @@ namespace SonaBookings.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
+                await _roomFactory.AddRoomAsync(room);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CapacityId"] = new SelectList(_context.Capacitys, "CapacityId", "CapacityName", room.CapacityId);
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeName", room.RoomTypeId);
-            ViewData["SizeId"] = new SelectList(_context.Sizes, "SizeId", "SizeName", room.SizeId);
+            ViewData["CapacityId"] = new SelectList(await _roomFactory.GetAllCapacitiesAsync(), "CapacityId", "CapacityName", room.CapacityId);
+            ViewData["RoomTypeId"] = new SelectList(await _roomFactory.GetAllRoomTypesAsync(), "RoomTypeId", "RoomTypeName", room.RoomTypeId);
+            ViewData["SizeId"] = new SelectList(await _roomFactory.GetAllSizesAsync(), "SizeId", "SizeName", room.SizeId);
             return View(room);
         }
 
@@ -84,14 +81,14 @@ namespace SonaBookings.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms.FindAsync(id);
+            var room = await _roomFactory.GetRoomByIdAsync(id.Value);
             if (room == null)
             {
                 return NotFound();
             }
-            ViewData["CapacityId"] = new SelectList(_context.Capacitys, "CapacityId", "CapacityName", room.CapacityId);
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeName", room.RoomTypeId);
-            ViewData["SizeId"] = new SelectList(_context.Sizes, "SizeId", "SizeName", room.SizeId);
+            ViewData["CapacityId"] = new SelectList(await _roomFactory.GetAllCapacitiesAsync(), "CapacityId", "CapacityName", room.CapacityId);
+            ViewData["RoomTypeId"] = new SelectList(await _roomFactory.GetAllRoomTypesAsync(), "RoomTypeId", "RoomTypeName", room.RoomTypeId);
+            ViewData["SizeId"] = new SelectList(await _roomFactory.GetAllSizesAsync(), "SizeId", "SizeName", room.SizeId);
             return View(room);
         }
 
@@ -111,25 +108,17 @@ namespace SonaBookings.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
+                    await _roomFactory.UpdateRoomAsync(room);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    if (!RoomExists(room.RoomId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Console.WriteLine(ex.Message);
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CapacityId"] = new SelectList(_context.Capacitys, "CapacityId", "CapacityName", room.CapacityId);
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeName", room.RoomTypeId);
-            ViewData["SizeId"] = new SelectList(_context.Sizes, "SizeId", "SizeName", room.SizeId);
+            ViewData["CapacityId"] = new SelectList(await _roomFactory.GetAllCapacitiesAsync(), "CapacityId", "CapacityName", room.CapacityId);
+            ViewData["RoomTypeId"] = new SelectList(await _roomFactory.GetAllRoomTypesAsync(), "RoomTypeId", "RoomTypeName", room.RoomTypeId);
+            ViewData["SizeId"] = new SelectList(await _roomFactory.GetAllSizesAsync(), "SizeId", "SizeName", room.SizeId);
             return View(room);
         }
 
@@ -141,11 +130,7 @@ namespace SonaBookings.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
-                .Include(r => r.Capacity)
-                .Include(r => r.RoomType)
-                .Include(r => r.Size)
-                .FirstOrDefaultAsync(m => m.RoomId == id);
+            var room = await _roomFactory.GetRoomByIdAsync(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -159,19 +144,8 @@ namespace SonaBookings.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            if (room != null)
-            {
-                _context.Rooms.Remove(room);
-            }
-
-            await _context.SaveChangesAsync();
+            await _roomFactory.DeleteRoomAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool RoomExists(int id)
-        {
-            return _context.Rooms.Any(e => e.RoomId == id);
         }
     }
 }

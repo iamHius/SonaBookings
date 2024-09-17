@@ -10,7 +10,6 @@
 }
 
 
-
 <section class="room-details-section spad">
     <div class="container">
         <div class="row">
@@ -65,7 +64,7 @@
             <div class="col-lg-4">
                 <div class="room-booking">
                     <h3>Your Reservation</h3>
-                    <form asp-action="Create">
+                    <form asp-action="Create" id="thongbao">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <input hidden asp-for="Booking.UserId" class="form-control" readonly />
@@ -96,7 +95,7 @@
                             <input hidden asp-for="Booking.Status" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <button type="submit">
+                            <button type="submit" id="buttonBookNow">
                                 Book Now
                             </button>
                         </div>
@@ -113,3 +112,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+                     

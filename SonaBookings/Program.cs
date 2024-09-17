@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using SonaBookings.Areas.Admin.Factories;
+using SonaBookings.Areas.Admin.Interfaces;
 using SonaBookings.Areas.Identity.Data;
 using SonaBookings.Models;
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +35,7 @@ builder.Services.AddDataProtection()
             });
 
 builder.Services.AddScoped<EmailSender>();
+builder.Services.AddScoped<IRoomFactory, RoomFactory>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);

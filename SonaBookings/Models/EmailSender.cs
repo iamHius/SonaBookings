@@ -13,11 +13,6 @@ namespace SonaBookings.Models
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            /*var smtpHost = _configuration["Smtp:Host"];
-            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
-            var smtpUser = _configuration["Smtp:Username"];
-            var smtpPass = _configuration["Smtp:Password"];*/
-
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
