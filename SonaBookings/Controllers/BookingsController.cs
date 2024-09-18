@@ -196,7 +196,7 @@ namespace SonaBookings.Controllers
                     RoomId = roomId.Value,
                     UserId = user,
                     BookingDate = DateTime.Now,
-                    Status = "Confirmed",
+                    Status = "Đặt phòng thành công",
                     IsPayment = false
                 }
 
@@ -211,22 +211,6 @@ namespace SonaBookings.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("BookingId,UserId,RoomId,CheckInDate,CheckOutDate,BookingDate,Status")] Booking booking)
         {
-
-            /*var today = DateTime.Now;
-            if (booking.CheckInDate < today)
-            {
-                ModelState.AddModelError("", "Thông tin không hợp lệ");
-            }
-            else if (booking.CheckOutDate > booking.CheckInDate)
-            {
-                ModelState.AddModelError("", "Thông tin không hợp lệ");
-                return View(booking);
-            }
-            else if (booking.CheckOutDate < today)
-            {
-                ModelState.AddModelError("", "Thông tin không hợp lệ");
-                return View(booking);
-            }*/
 
             if (ModelState.IsValid)
             {
@@ -302,6 +286,7 @@ namespace SonaBookings.Controllers
             {
                 try
                 {
+                    booking.Status = "Đã thay đổi phòng";
                     _context.Update(booking);
                     await _context.SaveChangesAsync();
                 }
