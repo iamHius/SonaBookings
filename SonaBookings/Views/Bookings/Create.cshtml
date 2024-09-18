@@ -108,6 +108,61 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $(document).ready(function () {
+                $('#buttonBookNow').click(function (e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '@Url.Action("Create", "Bookings")',
+                        type: 'POST',
+                        data: $('#thongbao').serialize(),
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    title: 'Bạn đã đặt phòng thành công!',
+                                    text: "Nhấn OK để xem chi tiết đặt phòng",
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/Bookings/Details/' + response.bookingId;
+                                    }
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: "Thông tin đặt phòng không hợp lệ" + error,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                });
+            });
+
+            document.getElementById("bookNowButton").addEventListener("click", function () {
+                this.disabled = true;
+            });
+
+
+            function setCheckoutMinDate() {
+                var checkin = document.getElementById("checkin").value;
+                var checkout = document.getElementById("checkout");
+
+                var today = new Date().toISOString().split('T')[0];
+                checkout.min = checkin < today ? today : checkin;
+
+                window.onload = function () {
+                    var today = new Date().toISOString().split('T')[0];
+                    document.getElementById("checkin").setAttribute("min", today);
+                };
+            }
+
+        </script>
     }
 }
 

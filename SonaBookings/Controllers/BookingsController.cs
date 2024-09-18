@@ -211,12 +211,33 @@ namespace SonaBookings.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("BookingId,UserId,RoomId,CheckInDate,CheckOutDate,BookingDate,Status")] Booking booking)
         {
-            
+
+            /*var today = DateTime.Now;
+            if (booking.CheckInDate < today)
+            {
+                ModelState.AddModelError("", "Thông tin không hợp lệ");
+            }
+            else if (booking.CheckOutDate > booking.CheckInDate)
+            {
+                ModelState.AddModelError("", "Thông tin không hợp lệ");
+                return View(booking);
+            }
+            else if (booking.CheckOutDate < today)
+            {
+                ModelState.AddModelError("", "Thông tin không hợp lệ");
+                return View(booking);
+            }*/
+
             if (ModelState.IsValid)
             {
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 var room = await _context.Rooms.FindAsync(booking.RoomId);
+                if (room.IsAvailable == false)
+                {
+                    ModelState.AddModelError("", "Phòng này hiện đã được đặt");
+                    return View(booking);
+                }
                 if (room != null)
                 {
                     room.IsAvailable = false;
@@ -239,8 +260,8 @@ namespace SonaBookings.Controllers
                         
                     ";
                 await _emailSender.SendEmailAsync(user.Email,emailSubject, emailBody);
-                
-                return RedirectToAction("Details", new {id = booking.BookingId});
+
+                return Json(new { success = true, bookingId = booking.BookingId });
             }
             return View(booking);
         }
