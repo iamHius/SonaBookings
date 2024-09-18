@@ -1,9 +1,15 @@
-SonaBookings Project - Online Booking Application Project 
-Made by LHBC Team 
+# SonaBookings Project - Online Booking Application Project 
+# Made by LHBC Team
+----------------------------------------------------------------------------------
+**Number of Members:**
+```
+04
+```
+**Name and Roles:**
+```
+1. Truong Trung Hieu - _Back End Developer (Leader)_ 
+2. Tran Quang Cong - _Front End Developer (Member)_
+3. Dinh Ba Linh - _Design and Scrum Master (Member)_
+4. Pham The Bo - _Product Owner (Member)_
+```
 
-Number of Members: 4 
-Name and Roles 
-Truong Trung Hieu - Back End Developer (Leader) 
-Tran Quang Cong - Front End Developer (Member)
-Dinh Ba Linh - Design and Scrum Master (Member)
-Pham The Bo - Product Owner (Member)
