@@ -25,6 +25,9 @@
                 Trạng thái thanh toán 
             </th>
             <th>
+                Trạng thái đặt phòng
+            </th>
+            <th>
                 Chi tiết 
             </th>
         </tr>
@@ -46,6 +49,9 @@
             </td>
             <td>
                 @(item.IsPayment ? "Đã thanh toán" : "Chưa thanh toán")
+            </td>
+            <td>
+                @item.Status
             </td>
             <td>
                     <a asp-action="Details" asp-route-id="@item.BookingId" class="text-dark">Chi tiết</a>
