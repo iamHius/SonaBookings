@@ -5,13 +5,13 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Create</h1>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<h4>Booking</h4>
+<h2>Add New Booking</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" asp-controller="BookingManager" asp-area="Admin">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
@@ -54,6 +54,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="BookingManager" asp-area="Admin">Back to List</a>
 </div>
 
+<partial name="_ViewDetailsStyle" />

@@ -50,8 +50,8 @@ namespace SonaBookings.Areas.Admin.Controllers
         // GET: Admin/BookingManager/Create
         public IActionResult Create()
         {
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomDescription");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -68,8 +68,8 @@ namespace SonaBookings.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomDescription", booking.RoomId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", booking.UserId);
             return View(booking);
         }
 
@@ -86,8 +86,8 @@ namespace SonaBookings.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomDescription", booking.RoomId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", booking.UserId);
             return View(booking);
         }
 
@@ -123,8 +123,8 @@ namespace SonaBookings.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomDescription", booking.RoomId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", booking.RoomId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", booking.UserId);
             return View(booking);
         }
 
