@@ -5,11 +5,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Invoice</h1>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h2>Invoice Management</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +23,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -43,12 +40,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking.BookingId)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.InvoiceId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.InvoiceId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InvoiceId">Delete</a>
-            </td>
         </tr>
 }
     </tbody>
 </table>
+<partial name="_ViewDetailsStyle" />

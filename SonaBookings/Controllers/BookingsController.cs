@@ -103,7 +103,7 @@ namespace SonaBookings.Controllers
                         
                     ";
             await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
-            return RedirectToAction("InvoiceDetails", new { id = invoice.InvoiceId});
+            return Json(new { success = true, invoiceId = invoice.InvoiceId });
         }
 
         public async Task<IActionResult> InvoiceDetails(int id)

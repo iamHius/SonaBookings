@@ -15,7 +15,7 @@
 
     }
     <h3>Chi tiết đặt phòng</h3>
-    <table>
+    <table id="thanhtoans">
         <tr>
             <th>Phòng</th>
             <td>@Model.Room.RoomNo</td>
@@ -49,7 +49,7 @@
     <div class="col justify-content-center ms-xxl-10">
         @if(Model.IsPayment == false)
         {
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" id="buttonPayment">
                 <a href="/Bookings/ProcessPayment/@Model.BookingId" class="text-dark">
                     Thanh toán ngay 
                 </a>
@@ -79,5 +79,61 @@
 
 
 <partial name="_ViewDetailsStyle" />
-           
+@section Scripts {
+    @{
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $(document).ready(function () {
+                $('#buttonPayment').click(function (e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '@Url.Action("ProcessPayment", "Bookings")',
+                        type: 'POST',
+                        data: $('#thanhtoans').serialize(),
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    title: 'Bạn đã thanh toán thành công!',
+                                    text: "Nhấn OK để xem chi tiết hóa đơn",
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/Bookings/InvoiceDetails/' + response.invoiceId;
+                                    }
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: "Bạn không thể thanh toán" + error,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                });
+            });
+
             
+
+
+            function setCheckoutMinDate() {
+                var checkin = document.getElementById("checkin").value;
+                var checkout = document.getElementById("checkout");
+
+                var today = new Date().toISOString().split('T')[0];
+                checkout.min = checkin < today ? today : checkin;
+
+                window.onload = function () {
+                    var today = new Date().toISOString().split('T')[0];
+                    document.getElementById("checkin").setAttribute("min", today);
+                };
+            }
+
+        </script>
+    }
+}
+
