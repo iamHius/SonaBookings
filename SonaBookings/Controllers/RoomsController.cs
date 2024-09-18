@@ -24,6 +24,7 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Rooms
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int roompage = 1)
         {
             /*var applicationDbContext = _context.Rooms.Include(r => r.Capacity).Include(r => r.RoomType).Include(r => r.Size);
@@ -83,6 +84,7 @@ namespace SonaBookings.Controllers
 
 
         // GET: Rooms/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -104,6 +106,7 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Rooms/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["CapacityId"] = new SelectList(_context.Capacitys, "CapacityId", "CapacityName");
@@ -117,6 +120,7 @@ namespace SonaBookings.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("RoomId,RoomNo,FeePerNight,RoomPhoto,IsAvailable,RoomDescription,RoomTypeId,SizeId,CapacityId")] Room room)
         {
             if (ModelState.IsValid)
@@ -132,6 +136,7 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Rooms/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -155,6 +160,7 @@ namespace SonaBookings.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("RoomId,RoomNo,FeePerNight,RoomPhoto,IsAvailable,RoomDescription,RoomTypeId,SizeId,CapacityId")] Room room)
         {
             if (id != room.RoomId)
@@ -189,6 +195,7 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Rooms/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -212,6 +219,7 @@ namespace SonaBookings.Controllers
         // POST: Rooms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var room = await _context.Rooms.FindAsync(id);

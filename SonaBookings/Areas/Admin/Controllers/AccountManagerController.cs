@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SonaBookings.Areas.Admin.ViewModels;
@@ -8,6 +9,7 @@ using SonaBookings.Models;
 namespace SonaBookings.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AccountManagerController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

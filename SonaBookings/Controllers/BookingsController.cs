@@ -15,6 +15,7 @@ using SonaBookings.Models.ViewModels;
 
 namespace SonaBookings.Controllers
 {
+    [Authorize]
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -103,7 +104,8 @@ namespace SonaBookings.Controllers
                         
                     ";
             await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
-            return Json(new { success = true, invoiceId = invoice.InvoiceId });
+            /*return Json(new { success = true, invoiceId = invoice.InvoiceId });*/
+            return RedirectToAction("InvoiceDetails", new {id = invoice.InvoiceId});
         }
 
         public async Task<IActionResult> InvoiceDetails(int id)
@@ -135,7 +137,7 @@ namespace SonaBookings.Controllers
             {
                 return View("NotFound");
             }
-            booking.Status = "CheckOut";
+            booking.Status = "Đã trả phòng";
             _context.Update(booking);
 
             var room = await _context.Rooms.FindAsync(booking.RoomId);
@@ -173,7 +175,6 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Bookings/Create
-        [Authorize]
         public IActionResult Create(int? roomId)
         {
             var user = _userManager.GetUserId(User);
@@ -208,7 +209,6 @@ namespace SonaBookings.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> Create([Bind("BookingId,UserId,RoomId,CheckInDate,CheckOutDate,BookingDate,Status")] Booking booking)
         {
 
@@ -251,6 +251,7 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Bookings/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -275,6 +276,7 @@ namespace SonaBookings.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(int id, [Bind("BookingId,UserId,RoomId,CheckInDate,CheckOutDate,BookingDate,Status")] Booking booking)
         {
             if (id != booking.BookingId)
@@ -309,6 +311,7 @@ namespace SonaBookings.Controllers
         }
 
         // GET: Bookings/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -330,6 +333,7 @@ namespace SonaBookings.Controllers
         // POST: Bookings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var booking = await _context.Bookings.FindAsync(id);
