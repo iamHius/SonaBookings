@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SonaBookings.Areas.Admin.ViewModels;
 using SonaBookings.Areas.Identity.Data;
 
 namespace SonaBookings.Areas.Admin.Controllers
@@ -25,9 +26,16 @@ namespace SonaBookings.Areas.Admin.Controllers
 
         [Route("Index")]
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View("Index", new HomeAdminViewModel
+            {
+
+                Users = await _userManager.Users.ToListAsync(),
+                Rooms = await _context.Rooms.ToListAsync(),
+                Bookings = await _context.Bookings.ToListAsync(),
+                RoomTypes = await _context.RoomTypes.ToListAsync()
+            });
         }
 
         [Route("Invoice")]
